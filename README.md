@@ -64,7 +64,7 @@ A plateform for "Project du Fin d'année" projects
     And add this code :
     ```ini
     [Unit]
-    Description=Gunicorn instance to serve Blog.tn
+    Description=Gunicorn instance to serve PForm
     After=network.target
 
     [Service]
@@ -72,7 +72,7 @@ A plateform for "Project du Fin d'année" projects
     Group=www-data
     WorkingDirectory=/home/<Username>/PForm
     Environment="PATH=/home/<Username>/PForm/venv/bin"
-    ExecStart=/home/bloger/Blog.tn/venv/bin/gunicorn --workers 3 --bind unix:blog_tn.sock wsgi:app
+    ExecStart=/home/<Username>/PForm/venv/bin/gunicorn --workers 3 --bind unix:form.sock wsgi:app
 
     [Install]
     WantedBy=multi-user.target
@@ -83,50 +83,55 @@ A plateform for "Project du Fin d'année" projects
     Before starting the guinicorn service, you’ll need to make a permission change, because the Nginx www-data user won’t be able to read files in your home directory by default . A quick fix is to change the group associated with your home directory using chgrp:
 
     ```bash	
-    sudo chgrp www-data /home/bloger
+    sudo chgrp www-data /home/<User>
     ```
 
     You can now start the gunicorn service you created:
 
     ```bash
-    sudo systemctl start blog
+    sudo systemctl start app
     ```	
     Then enable it so that it starts at boot:
 
     ```bash
-    sudo systemctl enable blog
+    sudo systemctl enable app
     ```
 
     Check the status of the process to find out whether it was able to start:
 
     ```bash
-    sudo systemctl status blog
+    sudo systemctl status app
     ```
 
 10. Configuring Nginx to Proxy Requests : 
 
     ```bash
-    sudo nano /etc/nginx/sites-available/blog
+    sudo nano /etc/nginx/sites-available/app
     ```
     And add this code :
 
     ```nginx
-    server {
-        listen 80;
-        server_name blog.local;
-
-        location / {
-            include uwsgi_params;
-            uwsgi_pass unix:/home/bloger/Blog.tn/blog_tn.sock;
-        }
+    http {
+        upstream backend {
+        server unix:/home/<Username>/PForm/form.sock;
     }
 
+    server {
+        listen 80;
+        server_name form.local;
+
+        location / {
+        include uwsgi_params;
+        uwsgi_pass backend;
+        }
+    }
+    }
     ```	
 
     Save and close the file then , to enable the Nginx server block configuration we’ve just created, link the file to the sites-enabled directory:
 
     ```bash
-    sudo ln -s /etc/nginx/sites-available/blog /etc/nginx/sites-enabled
+    sudo ln -s /etc/nginx/sites-available/app /etc/nginx/sites-enabled
     ```
 
     Then we unlink the default configuration file from the /sites-enabled/ directory:
@@ -152,8 +157,8 @@ A plateform for "Project du Fin d'année" projects
     > Some Trouble shooting : <br>
     >When testing if the app is running or not we will get `502 Bad Gateway` error , to fix that we need to check the logs :
     > ```bash
-    > sudo chown www-data:www-data /home/bloger/Blog.tn/blog_tn.sock
-    > sudo chmod +x /home/bloger/
-    > sudo systemctl restart blog
+    > sudo chown www-data:www-data /home/<Username>/PForm/form.sock
+    > sudo chmod +x /home/<Username>/
+    > sudo systemctl restart app
     > sudo systemctl restart nginx
     > ```
