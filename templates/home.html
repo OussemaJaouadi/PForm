@@ -1,0 +1,67 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>Project List</h1>
+
+  <br>
+  
+  {% if projects %}
+    <div class="table-responsive table-full-width">
+      <table class="table table-striped">
+        <thead>
+          <tr>
+            <th class="text-center"><strong>Project Name</strong></th>
+            <th class="text-center"><strong>Teacher</strong></th>
+            <th class="text-center">Field</th>
+            <th class="text-center">Rapport</th>
+            <th class="text-center">Mark</th>
+            <th class="text-center">Students</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for project in projects %}
+            <tr>
+              <td class="text-center"><strong>{{ project.name|upper }}</strong></td>
+              <td class="text-center"><strong><u>{{ project.teacher.username }}</u></strong></td>
+              <td class="text-center">
+                <button class="btn btn-md btn-outline-primary" disabled> 
+                  {{ project.field }}
+                </button>
+              </td>
+              <td class="text-center">
+                {% if project.rapport %}
+                  <a class="btn btn-md btn-outline-info" href="{{ url_for('static', filename='pdfs/' ~ project.rapport) }}">View Rapport</a>
+                {% else %}
+                  <button class="btn btn-md btn-outline-secondary" href="#" disabled >No rapport uploaded yet.</button>
+                {% endif %}
+              </td>
+              <td class="text-center">
+                <button class="btn btn-md btn-outline-success" disabled>
+                  {% if project.mark %}
+                    {{ project.mark }}
+                  {% else %}
+                    No mark yet.
+                  {% endif %}
+                </button>
+              </td>
+              <td class="text-center">
+                <ul>
+                  {% for student in project.students %}
+                    <li>
+                      {{ student.username }}
+                    </li>
+                  {% endfor %}
+                </ul>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% else %}
+    <div class="no-projects">
+      <p>No projects yet</p>
+    </div>
+  {% endif %}
+
+{% endblock %}

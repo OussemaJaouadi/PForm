@@ -1,0 +1,91 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<h1>Admin Dashboard</h1>
+<hr>
+<h2>Account Info</h2>
+
+<div class="card">
+  <div class="card-body">
+    <h5 class="card-title">Username: {{ current_user.username }}</h5>
+    <p class="card-text">Admin ID: {{ current_user.admin_id }}</p>
+    <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#updateAdminProfileModal">
+        Update Profile
+    </button>
+  </div>
+</div>
+<br>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Request ID</th>
+                <th>User</th>
+                <th>Role</th>
+                <th>Desired Role</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for req in requests %}
+                <tr>
+                    <td>{{ req.request.id }}</td>
+                    <td>
+                        <strong>
+                            {{ req.sender.username }}
+                        </strong>
+                    </td>
+                    <td>
+                        <button class="btn btn-md btn-outline-secondary" disabled > 
+                            {{ req.sender.role|upper }}
+                        </button>
+                    </td>
+                    <td>
+                        <button class="btn btn-md btn-outline-primary" disabled > 
+                            {{ req.request.content|upper }}
+                        </button>
+                    </td>
+                    <td>
+                        <a href="{{ url_for('approve_role', request_id=req.request.id) }}" class="btn btn-outline-success">
+                            <i class="bi bi-check"></i> Approve
+                        </a>
+                        <a href="{{ url_for('reject_role', request_id=req.request.id) }}" class="btn btn-outline-danger">
+                            <i class="bi bi-x"></i> Reject
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<!-- Update Admin Profile Modal -->
+<div class="modal fade" id="updateAdminProfileModal" tabindex="-1" role="dialog" aria-labelledby="updateAdminProfileModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="updateAdminProfileModalLabel">Update Profile</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="{{ url_for('update_profile') }}">
+            {{ form.csrf_token }}
+            <div class="form-group">
+              <label for="username" class="h5">Username</label>
+              <input type="text" class="form-control" id="username" name="username" value="{{ current_user.username }}" >
+            </div>
+            <div class="form-group">
+              <label for="admin_id" class="h5">Admin ID</label>
+              <input type="text" class="form-control" id="admin_id" name="admin_id" value="{{ current_user.admin_id }}">
+            </div>
+            <button type="submit" class="btn btn-primary btn-lg">Update</button>
+        </form>
+    </div>
+  </div>
+</div>
+</div>
+
+{% endblock %}

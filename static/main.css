@@ -1,0 +1,230 @@
+body {
+    background: #fafafa;
+    color: #333333;
+    margin-top: 5rem;
+  }
+  
+  h1, h2, h3, h4, h5, h6 {
+    color: #444444;
+  }
+  
+  .bg-steel {
+    background-color: #5f788a;
+  }
+  
+  .site-header .navbar-nav .nav-link {
+    color: #cbd5db;
+  }
+  
+  .site-header .navbar-nav .nav-link:hover {
+    color: #ffffff;
+  }
+  
+  .site-header .navbar-nav .nav-link.active {
+    font-weight: 500;
+  }
+  
+  .content-section {
+    background: #ffffff;
+    padding: 10px 20px;
+    border: 1px solid #dddddd;
+    border-radius: 3px;
+    margin-bottom: 20px;
+  }
+
+  .table-full-width {
+    width: 100%;
+    max-width: 100%;
+  }
+  .no-projects {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  .no-projects p {
+    font-size: 24px;
+    font-weight: bold;
+    color: #336699;
+    margin: 0;
+  }
+  .about-page {
+    margin: 20px;
+  }
+  
+  .project-description {
+    background-color: #f8f8f8;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 20px;
+  }
+  
+  .project-description h2 {
+    font-size: 24px;
+    color: #336699;
+    margin-bottom: 10px;
+  }
+  .about-page {
+    margin-top: 50px;
+  }
+  
+  .project-description {
+    margin-bottom: 20px;
+  }
+  
+  .team-members {
+    margin-top: 20px;
+  }
+  
+  .card {
+    margin-bottom: 20px;
+  }
+  
+  .card-title {
+    margin-bottom: 10px;
+  }
+  
+  .btn {
+    margin-top: 10px;
+  }
+  
+  .text-decoration-underline {
+    text-decoration: underline;
+  }
+  .field-info {
+    display: flex;
+    align-items: center;
+  }
+  
+  .field-label {
+    font-weight: bold;
+    margin-right: 5px;
+  }
+  
+  .team-mates {
+    margin-top: 10px;
+  }
+  
+  .team-mates ul {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .team-mates li {
+    margin-bottom: 5px;
+  }
+  
+  .rapport-label {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+  
+  .rapport-text {
+    margin-bottom: 10px;
+  }
+  .project-component {
+    display: flex;
+    align-items: center;
+    max-width: 600px;
+    margin: 0 auto;
+  }
+
+  .project-image {
+    width: 150px;
+    height: auto;
+    margin-right: 20px;
+  }
+
+  .project-details {
+    flex-grow: 1;
+  }
+
+  .project-name {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+
+  .project-points li {
+    margin-bottom: 5px;
+  }
+
+  .creation-date,
+  .page-count,
+  .pdf-size {
+    font-weight: bold;
+  }
+.chart-component {
+display: flex;
+flex-direction: column;
+align-items: center;
+}
+
+
+
+.title {
+font-size: 20px;
+font-weight: bold;
+margin-bottom: 10px;
+}
+
+.content {
+display: flex;
+flex-direction: row;
+align-items: center;
+}
+
+.status-codes {
+flex: 1;
+display: flex;
+flex-direction: column;
+}
+
+.status-code {
+margin-bottom: 5px;
+}
+
+canvas {
+max-width: 600px;
+}
+  
+  
+  /* Adjustments for small screens */
+  @media (max-width: 767px) {
+    .project-description,
+    .team-members {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  
+    .card {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+  .sprint-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .sprint-list li {
+    margin-bottom: 5px;
+  }
+  
+  .sprint-list a {
+    display: inline-block;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+  
+    
+  
+  

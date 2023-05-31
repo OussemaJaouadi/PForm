@@ -1,0 +1,114 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <div class="container" style="height: 100vh;">
+    <div class="row">
+      <div class="col-md-5">
+        <form method="POST" action="/monitor">
+          <div class="form-group">
+            <label for="scriptSelect" class="h4">Select Script:</label>
+            <hr>
+            <br>
+            <select class="form-control form-control-lg" id="scriptSelect" name="script">
+              {% for script in scripts %}
+                <option value="{{ script }}">{{ script }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <button type="submit" class="btn btn-outline-primary btn-lg">
+            <i class="bi bi-play-circle"></i> Execute
+          </button>
+        </form>
+      </div>
+    </div>
+
+    <br>
+
+    <div class="row">
+      <div class="col-md-12">
+        {% if projects %}
+          <h3>Projects:</h3>
+          <hr>
+          <div class="card-group">
+            {% for project in projects %}
+              <div class="card" style="width: 18rem; margin-bottom: 20px; padding: 10px;">
+                <img src="{{ url_for('static', filename='images/' + project.project_name + '.jpg') }}" class="card-img-top" style="height: 200px; object-fit: cover; object-position: top;" alt="Project Image">
+                <div class="card-body">
+                  <h5 class="card-title font-weight-bold" style="text-decoration: underline;">{{ project.project_name }}</h5>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Creation Date:</span> {{ project.creation_date }}
+                  </p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Size:</span> {{ project.size }}
+                  </p>
+                  <p class="card-text">
+                    <span class="font-weight-bold">Number of Pages:</span> {{ project.num_pages }}
+                  </p>
+                </div>
+              </div>
+            {% endfor %}
+          </div>
+        {% else %}
+          <p>No projects found for the given ID.</p>
+        {% endif %}
+
+
+        {% if logs %}
+          <h3>Logs:</h3>
+          <hr>
+          <ul>
+            <li>200 - {{ logs.response_200 }} requests</li>
+            <li>300 - {{ logs.response_300 }} requests</li>
+            <li>400 - {{ logs.response_400 }} requests</li>
+            <li>500 - {{ logs.response_500 }} requests</li>
+          </ul>
+
+          <div class="chart-component">
+            <div class="content">
+              <canvas id="myChart" style="width: 100%; height: 400px;"></canvas>
+            </div>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
+  <script>
+    {% if logs %}
+      var xValues = ["200", "300", "400", "500"];
+      var yValues = [
+        {{ logs.response_200|default(0) }},
+        {{ logs.response_300|default(0) }},
+        {{ logs.response_400|default(0) }},
+        {{ logs.response_500|default(0) }}
+      ];
+      var barColors = [
+        "#b91d47",
+        "#00aba9",
+        "#2b5797",
+        "#e8c3b9",
+        "#1e7145"
+      ];
+
+      new Chart("myChart", {
+        type: "doughnut",
+        data: {
+          labels: xValues,
+          datasets: [{
+            backgroundColor: barColors,
+            data: yValues
+          }]
+        },
+        options: {
+          title: {
+            display: true,
+            text: "Status codes of the web server"
+          },
+          responsive: true,
+          maintainAspectRatio: false
+        }
+      });
+    {% endif %}
+  </script>
+{% endblock %}

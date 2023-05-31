@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% block content %}
+<h4> 
+    <strong> {{ code }} </strong> .
+    {{ message }}
+</h4>
+<hr>
+  {% if code == "403" %}
+  <img src="{{ url_for('static', filename='errors/403.webp') }}" style="height: auto; object-fit: contain; margin: 0 auto;">
+  {% elif code == "401" %}
+  <img src="{{ url_for('static', filename='errors/403.webp') }}" style="height: auto; object-fit: contain; margin: 0 auto;">
+  {% elif code=="404" %}
+  <img src="{{ url_for('static', filename='errors/404.jpg') }}" style="height: auto; object-fit: contain; margin: 0 auto;">
+  {% else %}
+  <img src="{{ url_for('static', filename='errors/empty.webp') }}" style="height: auto; object-fit: contain; margin: 0 auto;">  
+  {% endif %}
+{% endblock %}

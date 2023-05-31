@@ -1,0 +1,184 @@
+{% extends "layout.html" %}
+
+{% block content %}
+  <h1>Student Dashboard</h1>
+  <hr>
+  <h2>Account Info</h2>
+
+  <div class="card">
+    <div class="card-body">
+      <h5 class="card-title">Username: {{ current_user.username }}</h5>
+      <p class="card-text">Student ID: {{ current_user.student_id }}</p>
+      <p class="card-text">Encadrant:<strong> {{ current_user.encadrant.username }}  </strong> </p>
+      <button type="button" class="btn btn-outline-secondary" data-toggle="modal" data-target="#updateProfileModal">
+        Update Profile
+      </button>
+      <button type="button" class="btn btn-outline-warning" data-toggle="modal" data-target="#requestRoleModal">
+        Request Role Update
+      </button>
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>My Project</h2>
+
+  {% if project %}
+    <div class="card">
+      <div class="card-body">
+        <div class="d-flex justify-content-between align-items-center">
+          <h5 class="card-title">{{ project.name }}</h5>
+          {% if project.mark %}
+            <button class="btn btn-outline-success btn-lg" disabled>{{ project.mark }}</button>
+          {% endif %}
+        </div>
+        <div class="field-info">
+          <p class="field-label">Field:</p>
+          <p class="field-text"><button type="button" class="btn btn-sm btn-outline-secondary field-button" disabled>{{ project.field }}</button></p>
+        </div>
+        <div class="team-mates">
+          <h6 class="card-subtitle mb-2 text-muted">Teammates:</h6>
+          <ul>
+            {% for student in project.students %}
+              {% if student.username != current_user.username %}
+                <li>{{ student.username }}</li>
+              {% endif %}
+            {% endfor %}
+          </ul>
+        </div>
+  
+        {% if project.rapport %}
+          <p class="rapport-label">Rapport:</p>
+          <p class="rapport-text"><a class="btn btn-sm btn-outline-info" href="{{ project.rapport }}">View Rapport</a></p>
+        {% else %}
+          <p class="rapport-label">Rapport:</p>
+          <p class="rapport-text">No rapport uploaded yet.</p>
+        {% endif %}
+  
+        <div class="button-group">
+          <button type="button" class="btn btn-outline-primary" data-toggle="modal" data-target="#uploadRapportModal">
+            Upload Project Rapport
+          </button>
+        </div>
+      </div>
+    </div>
+  {% else %}
+    <div class="no-projects">
+      <p>No projects yet</p>
+    </div>
+  {% endif %}
+  
+  
+
+  <h2>Sprints</h2>
+
+  <div class="table-responsive">
+    {% if sprints %}
+      <table class="table">
+        <thead>
+          <tr>
+            <th>Sprint Number</th>
+            <th>Progress</th>
+            <th>Review</th>
+            <th>Start Date</th>
+            <th>Deadline</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for sprint in sprints %}
+            <tr>
+              <td>{{ sprint.sprint_number }}</td>
+              <td>{{ sprint.progress }}</td>
+              <td>{{ sprint.review }}</td>
+              <td>{{ sprint.start_date }}</td>
+              <td>{{ sprint.deadline }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+      {% else %}
+      <div class="no-projects">
+        <p>No Sprints yet</p>
+      </div>
+    {% endif %}
+  </div>
+
+
+<!-- Upload Project Rapport Modal -->
+<div class="modal fade" id="uploadRapportModal" tabindex="-1" role="dialog" aria-labelledby="uploadRapportModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="uploadRapportModalLabel">Upload Project Rapport</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{ url_for('upload_rapport') }}" enctype="multipart/form-data">
+
+          <div class="form-group">
+            <label for="rapport">Select PDF File:</label>
+            <input type="file" class="form-control-file" id="rapport" name="rapport" accept=".pdf" required>
+          </div>
+          <button type="submit" class="btn btn-primary">Upload</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Request Role Update Modal -->
+<div class="modal fade" id="requestRoleModal" tabindex="-1" role="dialog" aria-labelledby="requestRoleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="requestRoleModalLabel">Request Role Update</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{ url_for('request_update_role') }}">
+          {{ form.csrf_token }}
+          <div class="form-group">
+            {{ form.content.label }}
+            {{ form.content(class="form-control") }}
+          </div>
+          <button type="submit" class="btn btn-primary">Send Request</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Update Profile Modal -->
+<div class="modal fade" id="updateProfileModal" tabindex="-1" role="dialog" aria-labelledby="updateProfileModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="updateProfileModalLabel">Update Profile</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{{ url_for('update_profile') }}">
+          {{ form2.csrf_token }}
+          <div class="form-group">
+            <label for="username" class="h5">Username</label>
+            <input type="text" class="form-control" id="username" name="username" value="{{ current_user.username }}" >
+          </div>
+          <div class="form-group">
+            <label for="student_id" class="h5">Student ID</label>
+            <input type="text" class="form-control" id="student_id" name="student_id" value="{{ current_user.student_id }}">
+          </div>
+          <button type="submit" class="btn btn-primary btn-lg">Update</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{% endblock %}
