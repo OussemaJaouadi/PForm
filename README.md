@@ -34,7 +34,7 @@ A plateform for "Project du Fin d'année" projects
         deactivate
         pip install wheel
         source venv/bin/activate
-        pip install guinicorn flask 
+        pip install gunicorn flask 
         sudo ufw allow <port>
         python app.py # Now we tested the app 
     ```
