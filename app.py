@@ -11,9 +11,6 @@ from forms import *
 from models import *
 from werkzeug.utils import secure_filename
 import os
-from faker import Faker
-
-fake = Faker()
 
 app = Flask(__name__)
 base_dir = os.path.abspath(os.path.dirname(__file__))
@@ -665,43 +662,6 @@ def page_not_found(e):
     return render_template('error.html',current_user=user ,code="404", message="Url Not Found")
 
 
-@app.route('/teacher_fake', methods=['GET', 'POST'])
-def fakeTeacher():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        # Get the submitted username and password
-        username = form.username.data
-        password = form.password.data
-        
-        # Create a new student object
-        student = Teacher(username=username, password=password)
-        
-        # Create a new database session
-        session = Session()
-        
-        try:
-            # Add the student to the database
-            session.add(student)
-            session.commit()
-            
-            # Flash a success message
-            flash('Registration successful! You can now log in.', 'success')
-            
-            # Redirect the user to the login page
-            return redirect('/login')
-        
-        except:
-            # Rollback the changes in case of any error
-            session.rollback()
-            raise
-        
-        finally:
-            # Close the database session
-            session.close()
-
-    return render_template('register.html', form=form)
-
-
 @app.route('/monitor', methods=['GET', 'POST'])
 @require_role(['teacher', 'admin'])
 def monitor():
@@ -746,46 +706,6 @@ def monitor():
             return render_template('error.html', code="404", message="Script not found", current_user=user)
 
     return render_template('monitor.html', scripts=scripts, logs=logs, current_user=user)
-
-
-
-@app.route('/admin_fake', methods=['GET', 'POST'])
-def fakeAdmin():
-    form = RegistrationForm()
-    if form.validate_on_submit():
-        # Get the submitted username and password
-        username = form.username.data
-        password = form.password.data
-        
-        # Create a new student object
-        student = Admin(username=username, password=password)
-        
-        # Create a new database session
-        session = Session()
-        
-        try:
-            # Add the student to the database
-            session.add(student)
-            session.commit()
-            
-            # Flash a success message
-            flash('Registration successful! You can now log in.', 'success')
-            
-            # Redirect the user to the login page
-            return redirect('/login')
-        
-        except:
-            # Rollback the changes in case of any error
-            session.rollback()
-            raise
-        
-        finally:
-            # Close the database session
-            session.close()
-
-    return render_template('register.html', form=form)
-
-
 
 
 if __name__ == '__main__':
