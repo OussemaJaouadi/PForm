@@ -27,48 +27,48 @@
     <div class="row">
       <div class="col-md-12">
         {% if projects %}
-          <h3>Projects:</h3>
-          <hr>
-          <div class="card-group">
-            {% for project in projects %}
-              <div class="card" style="width: 18rem; margin-bottom: 20px; padding: 10px;">
-                <img src="{{ url_for('static', filename='images/' + project.project_name + '.jpg') }}" class="card-img-top" style="height: 200px; object-fit: cover; object-position: top;" alt="Project Image">
+        <div class="row">
+          {% for project in projects %}
+            <div class="col-md-4 mb-4">
+              <div class="card">
+                <img src="/static/images/{{ project.project_name }}.jpg" alt="Project Image" class="card-img-top project-image img-fluid">
                 <div class="card-body">
-                  <h5 class="card-title font-weight-bold" style="text-decoration: underline;">{{ project.project_name }}</h5>
-                  <p class="card-text">
-                    <span class="font-weight-bold">Creation Date:</span> {{ project.creation_date }}
-                  </p>
-                  <p class="card-text">
-                    <span class="font-weight-bold">Size:</span> {{ project.size }}
-                  </p>
-                  <p class="card-text">
-                    <span class="font-weight-bold">Number of Pages:</span> {{ project.num_pages }}
-                  </p>
+                  <h2 class="card-title project-name h2 font-weight-bold">{{ project.project_name }}</h2>
+                  <ul class="card-text project-points">
+                    <li>Creation Date: <span class="creation-date">{{ project.creation_date }}</span></li>
+                    <li>Number of Pages: <span class="page-count">{{ project.num_pages }}</span></li>
+                    <li>PDF Size: <span class="pdf-size">{{ project.size }}</span></li>
+                  </ul>
                 </div>
               </div>
-            {% endfor %}
-          </div>
-        {% else %}
-          <p>No projects found for the given ID.</p>
-        {% endif %}
-
-
-        {% if logs %}
+            </div>
+          {% endfor %}
+        </div>
+      {% endif %}
+      
+      
+      {% if logs %}
+      <div class="row">
+        <div class="col-md-6">
           <h3>Logs:</h3>
           <hr>
-          <ul>
-            <li>200 - {{ logs.response_200 }} requests</li>
-            <li>300 - {{ logs.response_300 }} requests</li>
-            <li>400 - {{ logs.response_400 }} requests</li>
-            <li>500 - {{ logs.response_500 }} requests</li>
+          <ul class="logs-list">
+            <li>200 - <span class="log-count">{{ logs.response_200 }}</span> requests</li>
+            <li>300 - <span class="log-count">{{ logs.response_300 }}</span> requests</li>
+            <li>400 - <span class="log-count">{{ logs.response_400 }}</span> requests</li>
+            <li>500 - <span class="log-count">{{ logs.response_500 }}</span> requests</li>
           </ul>
-
+        </div>
+        <div class="col-md-6">
           <div class="chart-component">
             <div class="content">
               <canvas id="myChart" style="width: 100%; height: 400px;"></canvas>
             </div>
           </div>
-        {% endif %}
+        </div>
+      </div>
+    {% endif %}
+    
       </div>
     </div>
   </div>

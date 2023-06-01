@@ -136,10 +136,12 @@ body {
   }
 
   .project-image {
-    width: 150px;
-    height: auto;
-    margin-right: 20px;
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    object-position: center;
   }
+  
 
   .project-details {
     flex-grow: 1;
