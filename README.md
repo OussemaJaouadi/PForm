@@ -1,5 +1,15 @@
 # PForm 
 
+## Context
+
+In our academic year project we worked on setting up a vulnerable environment to show case some commun vulnrabilities and their impact .
+
+In this project we developed and created some [custom tools](https://github.com/OussemaJaouadi/PFTools) that we needed .
+
+The academic project report is uploaded ( but in french ) 
+
+The describtion and configuration below demonstrates how we setup our environment and running the application using NGINX as reverse proxy .
+
 ## Description 
 
 A plateform for "Project du Fin d'année" projects
